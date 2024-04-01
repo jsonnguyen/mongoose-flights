@@ -2,7 +2,8 @@ const Flight = require('../models/flight');
 
 module.exports = {
     index,
-    new: newFlight
+    new: newFlight, 
+    create
 };
 
 async function index(req, res) {
@@ -12,4 +13,14 @@ async function index(req, res) {
 
 function newFlight(req, res) {
     res.render('flights/new', { title: 'Add Flight', errorMsg: '' });
+}
+
+async function create(req, res) {
+    try {
+        await Flight.create(req.body);
+        res.redirect('/flights');
+    } catch (error) {
+        console.log(error);
+        res.render('flights/new', { errorMsg: error.message});
+    }
 }
